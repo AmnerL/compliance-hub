@@ -1,0 +1,11 @@
+package com.portafolio.compliancehub.auth.domain.model.exceptions;
+
+public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException() {
+        super("User not found.");
+    }
+
+    public UserNotFoundException(String message) {
+        super(message);
+    }
+}
