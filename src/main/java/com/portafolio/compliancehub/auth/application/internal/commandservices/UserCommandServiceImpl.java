@@ -1,7 +1,5 @@
 package com.portafolio.compliancehub.auth.application.internal.commandservices;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +28,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final TokenService tokenService;
 
     @Override
-    public Optional<AuthenticatedUser> handle(SignUpCommand command) {
+    public AuthenticatedUser handle(SignUpCommand command) {
         if (userRepository.existsByEmail(command.email())) {
             throw new EmailAlreadyExistsException(command.email());
         }
@@ -41,11 +39,11 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         String accessToken = tokenService.generateToken(savedUser.getId());
         String refreshToken = tokenService.generateRefreshToken(savedUser.getId());
-        return Optional.of(new AuthenticatedUser(savedUser, accessToken, refreshToken));
+        return new AuthenticatedUser(savedUser, accessToken, refreshToken);
     }
 
     @Override
-    public Optional<AuthenticatedUser> handle(SignInCommand command) {
+    public AuthenticatedUser handle(SignInCommand command) {
         User user = userRepository.findByEmail(command.email())
                 .orElseThrow(UserNotFoundException::new);
         if (!hashingService.matches(command.password(), user.getPassword())) {
@@ -53,17 +51,17 @@ public class UserCommandServiceImpl implements UserCommandService {
         }
         String accessToken = tokenService.generateToken(user.getId());
         String refreshToken = tokenService.generateRefreshToken(user.getId());
-        return Optional.of(new AuthenticatedUser(user, accessToken, refreshToken));
+        return new AuthenticatedUser(user, accessToken, refreshToken);
     }
 
     @Override
-    public Optional<AuthenticatedUser> handle(RefreshTokenCommand command) {
+    public AuthenticatedUser handle(RefreshTokenCommand command) {
         String newAccessToken = tokenService.refreshAccessToken(command.refreshToken());
         Long userId = tokenService.getUserIdFromToken(command.refreshToken());
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         String newRefreshToken = tokenService.generateRefreshToken(user.getId());
-        return Optional.of(new AuthenticatedUser(user, newAccessToken, newRefreshToken));
+        return new AuthenticatedUser(user, newAccessToken, newRefreshToken);
     }
 
 }

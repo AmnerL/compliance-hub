@@ -5,12 +5,10 @@ import com.portafolio.compliancehub.auth.domain.model.commands.RefreshTokenComma
 import com.portafolio.compliancehub.auth.domain.model.commands.SignInCommand;
 import com.portafolio.compliancehub.auth.domain.model.commands.SignUpCommand;
 
-import java.util.Optional;
-
 public interface UserCommandService {
-    Optional<AuthenticatedUser> handle(SignUpCommand command);
+    AuthenticatedUser handle(SignUpCommand command);
 
-    Optional<AuthenticatedUser> handle(SignInCommand command);
+    AuthenticatedUser handle(SignInCommand command);
 
-    Optional<AuthenticatedUser> handle(RefreshTokenCommand command);
+    AuthenticatedUser handle(RefreshTokenCommand command);
 }

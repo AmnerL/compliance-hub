@@ -4,7 +4,6 @@ import com.portafolio.compliancehub.auth.application.dto.AuthenticatedUser;
 import com.portafolio.compliancehub.auth.domain.model.commands.RefreshTokenCommand;
 import com.portafolio.compliancehub.auth.domain.model.commands.SignInCommand;
 import com.portafolio.compliancehub.auth.domain.model.commands.SignUpCommand;
-import com.portafolio.compliancehub.auth.domain.model.exceptions.InvalidRefreshTokenException;
 import com.portafolio.compliancehub.auth.domain.services.UserCommandService;
 import com.portafolio.compliancehub.auth.interfaces.rest.resources.*;
 import com.portafolio.compliancehub.auth.interfaces.rest.transform.*;
@@ -25,8 +24,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResource> register(@Valid @RequestBody SignUpResource resource) {
         SignUpCommand command = SignUpCommandFromResourceAssembler.toCommandFromResource(resource);
-        AuthenticatedUser authUser = userCommandService.handle(command)
-                .orElseThrow(() -> new RuntimeException("Registration failed"));
+        AuthenticatedUser authUser = userCommandService.handle(command);
         AuthResource authResource = AuthResourceFromUserAssembler.from(authUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(authResource);
     }
@@ -34,8 +32,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResource> login(@Valid @RequestBody SignInResource resource) {
         SignInCommand command = SignInCommandFromResourceAssembler.toCommandFromResource(resource);
-        AuthenticatedUser authUser = userCommandService.handle(command)
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        AuthenticatedUser authUser = userCommandService.handle(command);
         AuthResource authResource = AuthResourceFromUserAssembler.from(authUser);
         return ResponseEntity.ok(authResource);
     }
@@ -43,8 +40,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<AuthResource> refresh(@Valid @RequestBody RefreshTokenResource resource) {
         RefreshTokenCommand command = RefreshTokenCommandFromResourceAssembler.toCommandFromResource(resource);
-        AuthenticatedUser authUser = userCommandService.handle(command)
-                .orElseThrow(InvalidRefreshTokenException::new);
+        AuthenticatedUser authUser = userCommandService.handle(command);
         AuthResource authResource = AuthResourceFromUserAssembler.from(authUser);
         return ResponseEntity.ok(authResource);
     }
