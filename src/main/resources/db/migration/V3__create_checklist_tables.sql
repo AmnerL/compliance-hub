@@ -1,0 +1,25 @@
+CREATE TABLE checklists (
+    id BIGSERIAL PRIMARY KEY,
+    regulation_id BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE checklist_items (
+    id BIGSERIAL PRIMARY KEY,
+    checklist_id BIGINT NOT NULL REFERENCES checklists(id),
+    description TEXT NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE checklist_item_history (
+    id BIGSERIAL PRIMARY KEY,
+    item_id BIGINT NOT NULL REFERENCES checklist_items(id),
+    previous_status VARCHAR(30) NOT NULL,
+    new_status VARCHAR(30) NOT NULL,
+    changed_by BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
