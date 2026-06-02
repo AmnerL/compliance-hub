@@ -1,4 +1,4 @@
-package com.portafolio.compliancehub.auth.infrastructure.jpa.repositories;
+package com.portafolio.compliancehub.auth.infrastructure.persistence.jpa.repositories;
 
 import java.util.Optional;
 

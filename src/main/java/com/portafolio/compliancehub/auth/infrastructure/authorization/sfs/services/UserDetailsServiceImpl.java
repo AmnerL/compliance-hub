@@ -2,7 +2,7 @@ package com.portafolio.compliancehub.auth.infrastructure.authorization.sfs.servi
 
 import com.portafolio.compliancehub.auth.domain.model.aggregates.User;
 import com.portafolio.compliancehub.auth.infrastructure.authorization.sfs.model.UserDetailsImpl;
-import com.portafolio.compliancehub.auth.infrastructure.jpa.repositories.UserRepository;
+import com.portafolio.compliancehub.auth.infrastructure.persistence.jpa.repositories.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

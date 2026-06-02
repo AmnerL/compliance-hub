@@ -14,7 +14,7 @@ import com.portafolio.compliancehub.auth.domain.model.exceptions.EmailAlreadyExi
 import com.portafolio.compliancehub.auth.domain.model.exceptions.InvalidCredentialsException;
 import com.portafolio.compliancehub.auth.domain.model.exceptions.UserNotFoundException;
 import com.portafolio.compliancehub.auth.domain.services.UserCommandService;
-import com.portafolio.compliancehub.auth.infrastructure.jpa.repositories.UserRepository;
+import com.portafolio.compliancehub.auth.infrastructure.persistence.jpa.repositories.UserRepository;
 
 import lombok.AllArgsConstructor;
 
