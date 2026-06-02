@@ -58,15 +58,6 @@ public class ChecklistController {
         return ResponseEntity.ok(ChecklistResponseFromAggregateAssembler.fromAggregate(checklist));
     }
 
-    private Long extractUserId(UserDetails userDetails) {
-
-        if (userDetails instanceof UserDetailsImpl custom) {
-            return custom.getUserId();
-        }
-
-        return Long.valueOf(userDetails.getUsername());
-    }
-
     @PostMapping("/{checklistId}/items")
     public ResponseEntity<ChecklistResponseResource> addItem(
             @PathVariable Long checklistId,
@@ -95,5 +86,14 @@ public class ChecklistController {
                 resource.newDescription());
         Checklist checklist = commandService.handle(command);
         return ResponseEntity.ok(ChecklistResponseFromAggregateAssembler.fromAggregate(checklist));
+    }
+
+    private Long extractUserId(UserDetails userDetails) {
+
+        if (userDetails instanceof UserDetailsImpl custom) {
+            return custom.getUserId();
+        }
+
+        return Long.valueOf(userDetails.getUsername());
     }
 }
