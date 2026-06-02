@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.portafolio.compliancehub.notification.application.internal.outboundservices.notification.RegulationNotifier;
 import com.portafolio.compliancehub.regulation.application.internal.outboundservices.storage.FileStorageService;
 import com.portafolio.compliancehub.regulation.domain.model.aggregates.Regulation;
 import com.portafolio.compliancehub.regulation.domain.model.commands.AddVersionCommand;
@@ -22,6 +23,7 @@ public class RegulationCommandServiceImpl implements RegulationCommandService {
 
     private final RegulationRepository regulationRepository;
     private final FileStorageService fileStorageService;
+    private final RegulationNotifier regulationNotifier;
 
     @Transactional
     @Override
@@ -49,6 +51,8 @@ public class RegulationCommandServiceImpl implements RegulationCommandService {
                 true);
         regulation.addVersion(version);
         regulation = regulationRepository.save(regulation);
+
+        regulationNotifier.notifyNewRegulation(regulation);
         return regulation;
     }
 
