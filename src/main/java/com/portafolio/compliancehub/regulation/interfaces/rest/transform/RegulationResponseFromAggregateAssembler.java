@@ -1,12 +1,12 @@
-package com.portafolio.compliancehub.regulation.interfaces.transform;
+package com.portafolio.compliancehub.regulation.interfaces.rest.transform;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.portafolio.compliancehub.regulation.domain.model.aggregates.Regulation;
 import com.portafolio.compliancehub.regulation.domain.model.entities.RegulationVersion;
-import com.portafolio.compliancehub.regulation.interfaces.resource.RegulationResponseResource;
-import com.portafolio.compliancehub.regulation.interfaces.resource.VersionResponseResource;
+import com.portafolio.compliancehub.regulation.interfaces.rest.resource.RegulationResponseResource;
+import com.portafolio.compliancehub.regulation.interfaces.rest.resource.VersionResponseResource;
 
 public class RegulationResponseFromAggregateAssembler {
     public static RegulationResponseResource fromAggregate(Regulation regulation) {

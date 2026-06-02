@@ -1,4 +1,4 @@
-package com.portafolio.compliancehub.regulation.interfaces.resource;
+package com.portafolio.compliancehub.regulation.interfaces.rest.resource;
 
 import java.time.LocalDate;
 import java.util.List;

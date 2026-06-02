@@ -1,4 +1,4 @@
-package com.portafolio.compliancehub.regulation.interfaces;
+package com.portafolio.compliancehub.regulation.interfaces.rest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +26,10 @@ import com.portafolio.compliancehub.regulation.domain.model.queries.ListRegulati
 import com.portafolio.compliancehub.regulation.domain.model.valueobjects.Category;
 import com.portafolio.compliancehub.regulation.domain.service.RegulationCommandService;
 import com.portafolio.compliancehub.regulation.domain.service.RegulationQueryService;
-import com.portafolio.compliancehub.regulation.interfaces.resource.RegulationResponseResource;
-import com.portafolio.compliancehub.regulation.interfaces.resource.UploadRegulationResource;
-import com.portafolio.compliancehub.regulation.interfaces.transform.RegulationResponseFromAggregateAssembler;
-import com.portafolio.compliancehub.regulation.interfaces.transform.UploadRegulationCommandFromResourceAssembler;
+import com.portafolio.compliancehub.regulation.interfaces.rest.resource.RegulationResponseResource;
+import com.portafolio.compliancehub.regulation.interfaces.rest.resource.UploadRegulationResource;
+import com.portafolio.compliancehub.regulation.interfaces.rest.transform.RegulationResponseFromAggregateAssembler;
+import com.portafolio.compliancehub.regulation.interfaces.rest.transform.UploadRegulationCommandFromResourceAssembler;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
