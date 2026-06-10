@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.portafolio.compliancehub.ai.application.internal.outboundservices.indexing.RegulationIndexer;
 import com.portafolio.compliancehub.notification.application.internal.outboundservices.notification.RegulationNotifier;
 import com.portafolio.compliancehub.regulation.application.internal.outboundservices.storage.FileStorageService;
 import com.portafolio.compliancehub.regulation.domain.model.aggregates.Regulation;
@@ -24,6 +25,7 @@ public class RegulationCommandServiceImpl implements RegulationCommandService {
     private final RegulationRepository regulationRepository;
     private final FileStorageService fileStorageService;
     private final RegulationNotifier regulationNotifier;
+    private final RegulationIndexer regulationIndexer;
 
     @Transactional
     @Override
@@ -36,7 +38,10 @@ public class RegulationCommandServiceImpl implements RegulationCommandService {
         regulation = regulationRepository.save(regulation);
 
         String key = "regulations/" + regulation.getId() + "/v1.pdf";
+        byte[] fileBytes;
+
         try {
+            fileBytes = command.file().getBytes();
             fileStorageService.upload(key, command.file().getInputStream(), command.file().getSize());
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
@@ -51,6 +56,8 @@ public class RegulationCommandServiceImpl implements RegulationCommandService {
                 true);
         regulation.addVersion(version);
         regulation = regulationRepository.save(regulation);
+
+        regulationIndexer.index(regulation.getId(), regulation.getTitle(), fileBytes);
 
         regulationNotifier.notifyNewRegulation(regulation);
         return regulation;
