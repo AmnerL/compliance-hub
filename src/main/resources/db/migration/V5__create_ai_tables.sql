@@ -19,8 +19,8 @@ CREATE TABLE consultation_sources (
 );
 
 CREATE TABLE regulation_embeddings (
-    embedding_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    text TEXT,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    content TEXT,
     metadata JSONB,
-    embedding vector(768)
+    embedding vector(3072)
 );

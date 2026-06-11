@@ -33,7 +33,7 @@ spring:
     vectorstore:
       pgvector:
         table-name: regulation_embeddings
-        dimension: 768
+        dimension: 3072         
         initialize-schema: false
     google:
       genai:
@@ -45,6 +45,8 @@ spring:
           api-key: ${GOOGLE_API_KEY}
           options:
             model: text-embedding-004
+    retry:
+      max-attempts: 1
             
 logging:
   level:

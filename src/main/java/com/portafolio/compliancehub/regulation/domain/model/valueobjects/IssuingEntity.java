@@ -8,5 +8,6 @@ public enum IssuingEntity {
     MEF,
     MVCS,
     MINJUS,
-    MINEM
+    MINEM,
+    OTROS
 }
