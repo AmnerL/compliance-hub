@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.portafolio.compliancehub.notification.domain.model.aggregates.Notification;
 import com.portafolio.compliancehub.notification.domain.model.commands.MarkAsReadCommand;
+import com.portafolio.compliancehub.notification.domain.model.exceptions.NotificationNotFoundException;
 import com.portafolio.compliancehub.notification.domain.service.NotificationCommandService;
 import com.portafolio.compliancehub.notification.infrastructure.persistence.jpa.repositories.NotificationRepository;
 
@@ -20,7 +21,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     @Override
     public Notification handle(MarkAsReadCommand command) {
         var notification = notificationRepository.findById(command.notificationId())
-                .orElseThrow(() -> new IllegalArgumentException("Notification not found"));
+                .orElseThrow(() -> new NotificationNotFoundException(command.notificationId()));
         notification.markAsRead();
         return notificationRepository.save(notification);
     }
