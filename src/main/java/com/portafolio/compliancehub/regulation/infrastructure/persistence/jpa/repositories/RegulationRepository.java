@@ -1,5 +1,7 @@
 package com.portafolio.compliancehub.regulation.infrastructure.persistence.jpa.repositories;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +22,5 @@ public interface RegulationRepository extends JpaRepository<Regulation, Long> {
                         @Param("category") Category category,
                         Pageable pageable);
 
+        long countByCreatedAtAfter(LocalDateTime dateTime);
 }

@@ -40,7 +40,7 @@ spring:
         api-key: ${GOOGLE_API_KEY}
         chat:
           options:
-            model: gemini-2.0-flash
+            model: gemini-2.5-flash
         embedding:
           api-key: ${GOOGLE_API_KEY}
           options:
@@ -54,6 +54,6 @@ logging:
 
 app:
   jwt:
-    secret: 4e7b8f9a2c3d6e5f7a8b9c0d1e2f3a4b
+    secret: ${JWT_SECRET}
     access-token-expiration-ms: 1800000     
     refresh-token-expiration-ms: 604800000 
