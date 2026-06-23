@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.portafolio.compliancehub.ai.domain.model.aggregates.Consultation;
 import com.portafolio.compliancehub.ai.domain.model.queries.GetConsultationHistoryQuery;
 import com.portafolio.compliancehub.ai.domain.model.queries.GetConsultationQuery;
+import com.portafolio.compliancehub.ai.domain.model.exceptions.ConsultationNotFoundException;
 import com.portafolio.compliancehub.ai.domain.service.AIQueryService;
 import com.portafolio.compliancehub.ai.infrastructure.persistence.jpa.repositories.ConsultationRepository;
 
@@ -20,7 +21,7 @@ public class AIQueryServiceImpl implements AIQueryService {
     @Override
     public Consultation handle(GetConsultationQuery query) {
         return consultationRepository.findById(query.id())
-                .orElseThrow(() -> new RuntimeException("Consultation not found"));
+                .orElseThrow(() -> new ConsultationNotFoundException(query.id()));
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.portafolio.compliancehub.ai.application.internal.outboundservices.llm
 import com.portafolio.compliancehub.ai.domain.model.aggregates.Consultation;
 import com.portafolio.compliancehub.ai.domain.model.commands.ConsultCommand;
 import com.portafolio.compliancehub.ai.domain.model.valueobjects.Source;
+import com.portafolio.compliancehub.ai.domain.model.exceptions.ConsultationNotFoundException;
 import com.portafolio.compliancehub.ai.domain.service.AICommandService;
 import com.portafolio.compliancehub.ai.infrastructure.persistence.jpa.repositories.ConsultationRepository;
 
@@ -43,13 +44,13 @@ public class AICommandServiceImpl implements AICommandService {
                 List<Source> sources = similarDocuments.stream()
                                 .map(doc -> {
                                         String title = (String) doc.getMetadata().getOrDefault("fileName",
-                                                        "Documento desconocido");
+                                                         "Documento desconocido");
                                         String pageStr = (String) doc.getMetadata().get("pageNumber");
 
                                         Integer pageNumber = null;
                                         try {
                                                 if (pageStr != null && !pageStr.equals("unknown")) {
-                                                        pageNumber = Integer.parseInt(pageStr);
+                                                          pageNumber = Integer.parseInt(pageStr);
                                                 }
                                         } catch (NumberFormatException e) {
 
@@ -88,7 +89,7 @@ public class AICommandServiceImpl implements AICommandService {
         @Transactional
         public void updateFeedback(Long consultationId, boolean useful) {
                 Consultation consultation = consultationRepository.findById(consultationId)
-                                .orElseThrow(() -> new RuntimeException("Consultation not found"));
+                                .orElseThrow(() -> new ConsultationNotFoundException(consultationId));
                 consultation.registerFeedback(useful);
                 consultationRepository.save(consultation);
         }
