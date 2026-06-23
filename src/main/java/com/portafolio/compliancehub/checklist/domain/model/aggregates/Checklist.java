@@ -56,7 +56,7 @@ public class Checklist extends AuditableAbstractAggregateRoot<Checklist> {
         ChecklistItem item = items.stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Item not found in checklist"));
+                .orElseThrow(() -> new ItemNotFoundInChecklistException(getId(), itemId));
         items.remove(item);
     }
 
@@ -64,7 +64,7 @@ public class Checklist extends AuditableAbstractAggregateRoot<Checklist> {
         ChecklistItem item = items.stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Item not found in checklist"));
+                .orElseThrow(() -> new ItemNotFoundInChecklistException(getId(), itemId));
         item.setDescription(newDescription);
     }
 }

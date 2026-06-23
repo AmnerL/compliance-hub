@@ -13,6 +13,7 @@ import com.portafolio.compliancehub.regulation.domain.model.aggregates.Regulatio
 import com.portafolio.compliancehub.regulation.domain.model.commands.AddVersionCommand;
 import com.portafolio.compliancehub.regulation.domain.model.commands.UploadRegulationCommand;
 import com.portafolio.compliancehub.regulation.domain.model.entities.RegulationVersion;
+import com.portafolio.compliancehub.regulation.domain.model.exceptions.RegulationNotFoundException;
 import com.portafolio.compliancehub.regulation.domain.service.RegulationCommandService;
 import com.portafolio.compliancehub.regulation.infrastructure.persistence.jpa.repositories.RegulationRepository;
 
@@ -67,7 +68,7 @@ public class RegulationCommandServiceImpl implements RegulationCommandService {
     @Override
     public Regulation handle(AddVersionCommand command) {
         Regulation regulation = regulationRepository.findById(command.regulationId())
-                .orElseThrow(() -> new RuntimeException("Regulation not found"));
+                .orElseThrow(() -> new RegulationNotFoundException(command.regulationId()));
 
         int newVersionNumber = regulation.getVersions().stream()
                 .mapToInt(RegulationVersion::getVersionNumber)
