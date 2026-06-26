@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Reporte Consolidado de Cumplimiento</title>
+    <style type="text/css">
+        @page {
+            size: letter;
+            margin: 1.5cm;
+            @bottom-right {
+                content: "Página " counter(page) " de " counter(pages);
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 8pt;
+                color: #718096;
+            }
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #2D3748;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+        .header {
+            border-bottom: 2px solid #2B6CB0;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2B6CB0;
+        }
+        .title {
+            font-size: 18px;
+            color: #2D3748;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .meta-info {
+            font-size: 11px;
+            color: #718096;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #EDF2F7;
+            color: #4A5568;
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            border-bottom: 2px solid #CBD5E0;
+        }
+        td {
+            padding: 8px 10px;
+            font-size: 11px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .traffic-light {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            vertical-align: middle;
+        }
+        .light-green {
+            background-color: #48BB78;
+        }
+        .light-yellow {
+            background-color: #ECC94B;
+        }
+        .light-red {
+            background-color: #F56565;
+        }
+        .status-text {
+            font-weight: bold;
+            font-size: 10px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .text-green {
+            color: #2F855A;
+        }
+        .text-yellow {
+            color: #744210;
+        }
+        .text-red {
+            color: #9B2C2C;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-text">Compliance Hub</div>
+        <div class="title">Reporte Consolidado de Cumplimiento</div>
+        <div class="meta-info" th:text="'Fecha de generación: ' + ${generationDate}">Fecha de generación: 23/06/2026</div>
+    </div>
+
+    <div th:if="${reports != null and !reports.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Normativa</th>
+                    <th style="width: 25%;">Entidad</th>
+                    <th style="width: 15%;">Categoría</th>
+                    <th style="width: 10%;">Avance</th>
+                    <th style="width: 10%;">Semáforo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${reports}">
+                    <td th:text="${r.title}">Título</td>
+                    <td th:text="${r.issuingEntity}">Entidad</td>
+                    <td th:text="${r.category}">Categoría</td>
+                    <td th:text="${#numbers.formatDecimal(r.progressPercentage, 1, 1)} + '%'">0.0%</td>
+                    <td>
+                        <span class="traffic-light" 
+                              th:classappend="${r.status == 'VERDE' ? 'light-green' : (r.status == 'AMARILLO' ? 'light-yellow' : 'light-red')}"></span>
+                        <span class="status-text"
+                              th:classappend="${r.status == 'VERDE' ? 'text-green' : (r.status == 'AMARILLO' ? 'text-yellow' : 'text-red')}"
+                              th:text="${r.status}">VERDE</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${reports == null or reports.isEmpty()}">
+        <p style="font-size: 11px; color: #718096;">No hay normativas registradas en el sistema.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Reporte de Normativa</title>
+    <style type="text/css">
+        @page {
+            size: letter;
+            margin: 1.5cm;
+            @bottom-right {
+                content: "Página " counter(page) " de " counter(pages);
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 8pt;
+                color: #718096;
+            }
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #2D3748;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+        .header {
+            border-bottom: 2px solid #3182CE;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2B6CB0;
+        }
+        .title {
+            font-size: 18px;
+            color: #2D3748;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .meta-info {
+            font-size: 11px;
+            color: #718096;
+        }
+        .progress-card {
+            background-color: #EBF8FF;
+            border-left: 4px solid #3182CE;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        .progress-label {
+            font-size: 14px;
+            color: #2C5282;
+            font-weight: bold;
+        }
+        .progress-bar-bg {
+            background-color: #E2E8F0;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 8px;
+            width: 100%;
+        }
+        .progress-bar-fill {
+            background-color: #3182CE;
+            height: 10px;
+            border-radius: 5px;
+        }
+        .table-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2D3748;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th {
+            background-color: #EDF2F7;
+            color: #4A5568;
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            border-bottom: 2px solid #CBD5E0;
+        }
+        td {
+            padding: 8px 10px;
+            font-size: 11px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-weight: bold;
+            border-radius: 3px;
+            font-size: 9px;
+            text-align: center;
+        }
+        .status-complied {
+            background-color: #C6F6D5;
+            color: #22543D;
+        }
+        .status-na {
+            background-color: #E2E8F0;
+            color: #4A5568;
+        }
+        .status-pending {
+            background-color: #FED7D7;
+            color: #742A2A;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-text">Compliance Hub</div>
+        <div class="title" th:text="${regulationTitle}">Título de la Normativa</div>
+        <div class="meta-info">
+            Entidad Emisora: <span th:text="${issuingEntity}">Entidad</span> | 
+            Categoría: <span th:text="${categoryName}">Categoría</span> | 
+            Fecha de Publicación: <span th:text="${publicationDate}">Fecha</span>
+        </div>
+    </div>
+
+    <div class="progress-card">
+        <div class="progress-label">
+            Progreso General de Cumplimiento: <span th:text="${#numbers.formatDecimal(progressPercentage, 1, 1)} + '%'">0.0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" th:style="'width: ' + ${progressPercentage} + '%;'"></div>
+        </div>
+    </div>
+
+    <div class="table-title">Requisitos del Checklist Asociado</div>
+    <div th:if="${items != null and !items.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Requisito</th>
+                    <th style="width: 25%;">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.description}">Descripción del requisito</td>
+                    <td>
+                        <span class="status-badge" 
+                              th:classappend="${item.status.name() == 'COMPLIED' ? 'status-complied' : (item.status.name() == 'NOT_APPLICABLE' ? 'status-na' : 'status-pending')}"
+                              th:text="${item.status.name() == 'COMPLIED' ? 'Cumplido' : (item.status.name() == 'NOT_APPLICABLE' ? 'No Aplica' : 'Pendiente')}">
+                            Pendiente
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${items == null or items.isEmpty()}">
+        <p style="font-size: 11px; color: #718096;">No hay ningún checklist o requisito asociado a esta normativa.</p>
+    </div>
+</body>
+</html>
