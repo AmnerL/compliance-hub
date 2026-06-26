@@ -15,6 +15,7 @@ import com.portafolio.compliancehub.notification.domain.model.exceptions.Notific
 import com.portafolio.compliancehub.regulation.domain.model.exceptions.NoActiveVersionException;
 import com.portafolio.compliancehub.regulation.domain.model.exceptions.RegulationNotFoundException;
 import com.portafolio.compliancehub.regulation.domain.model.exceptions.VersionNotFoundException;
+import com.portafolio.compliancehub.report.domain.model.exceptions.ReportGenerationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -56,5 +57,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     public ResponseEntity<ErrorResponse> handleIllegalArgumentAndState(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ReportGenerationException.class)
+    public ResponseEntity<ErrorResponse> handleReportGeneration(ReportGenerationException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(ex.getMessage()));
     }
 }
